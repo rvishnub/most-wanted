@@ -277,28 +277,50 @@ printAllToConsole(dataObject);
 */
 
 function initSearch(){
-	alert("Hello World");
 
 	// get all the information you need to run the search
-	var yourName = prompt("Who do you want to search for?");
+	var yourName = prompt("For whom would you like to search?");
 
+	nameArray = yourName.toLowerCase().split(" ");
 	// then pass that info to the respective function.
-	var result = getPersonInfo("J", "T")
+	var result = getPersonInfo(nameArray[0], nameArray[nameArray.length-1]);
+
+	if (result == null){
+		alert("Name not found");
+		initSearch();
+	}
+	else{
+		responder(result);
+	}
+
 
 	// once the search is done, pass the results to the responder function
-	responder(result);
+	//responder(result);
 }
 
 function responder(results){
-	// results may be a list of strings, an object, or a single string. 
-	alert(results);
+	// results may be a list of strings, an object, or a single string.
+	alert(Object.keys(results).map(function(key){return results[key]})); 
+//	alert(Object.keys(results));
 }
 
+			 	
 function getPersonInfo(firstname, lastname){
-	var result = "This will be the information for whoever you searched for";
+	var result;
 	// look up person's information
+		Object.keys(dataObject).forEach(function (key) {
+			if (dataObject[key]['firstName'].toLowerCase() == firstname 
+				&& dataObject[key]['lastName'].toLowerCase() == lastname)
+			{
+				result = dataObject[key];
+			}
+
+
+		});
+
 	return result;
 }
+
 
 function getFamily(){
 	// return list of names of immediate family members
