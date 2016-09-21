@@ -435,10 +435,18 @@ function initSearch(){
 }
 
 function responder(results){
+
 	// results may be a list of strings, an object, or a single string.
 	try {
 		if (results != null){
-			alert(Object.keys(results).map(function(key){return results[key]})); 
+			//alert(Object.keys(results).map(function(key){return results[key]}); this works
+			dataArray = Object.keys(results).map(function(key){return results[key]});
+			console.log(dataArray);
+			alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
+				"\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
+				"\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
+				"\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
+				"\nSpouse: " + dataArray[9]);
 		}
 		else
 		{
