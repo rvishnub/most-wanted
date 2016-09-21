@@ -341,57 +341,129 @@ function getDescendants(object)
 		return kidsArray; 
 }
 
-forceKeyIntoObjects(dataObject);
+/*forceKeyIntoObjects(dataObject);
 var someObject = initSearch();
-var array = getFamily(someObject);
-namesArray = getNames(array);
-alert("Immediate family members are "+namesArray);
+var array = ToGetDescendants(someObject);
+alert(array);*/
 
+initSearch();
+function getPersonId(firstname, lastname){
+	var result;
+	try{
+			Object.keys(dataObject).forEach(function (key) {
+			if (dataObject[key]['firstName'].toLowerCase() == firstname 
+				&& dataObject[key]['lastName'].toLowerCase() == lastname)
+			{
+				result = key;
+			}
+		});
 
-function initSearch(){
+		return result;
+		// if (result != null){
+		// 	return result;
+		// }
+		// else
+		// {
+		// 	alert("That name was not found. Please conduct another search.");
+		// 	initSearch();
+		// }
+	}
+	catch (err){
+		console.log(err);
+	}
 
-	// get all the information you need to run the search
-	var yourName = prompt("For whom would you like to search?");
+}
 
+function GetNameInput(message){
+	var yourName = prompt(message);
 	nameArray = yourName.toLowerCase().split(" ");
-	// then pass that info to the respective function.
-	var result = getPersonInfo(nameArray[0], nameArray[nameArray.length-1]);
-
-	if (result == null){
-		alert("Name not found");
-		initSearch();
+	if (nameArray.length != 2){
+		alert("Please enter a first name and a last name (example: John Doe");
+		GetNameInput(message);
 	}
 	else{
-		//responder(result);
-		return result;
+		return nameArray;
 	}
 
+}
 
-	// once the search is done, pass the results to the responder function
-	//responder(result);
+function initSearch(){
+	var result;
+	try {
+		var personId;
+		var nameArray;
+		var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
+		//criteriaArray = criteria.toLowerCase().split(",");
+     	// then pass that info to the respective function.
+		switch (criteria) {
+			case "name":
+				nameArray = GetNameInput("For whom would you like to search?");
+				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				result = getPersonInfo(personId);
+				break;
+	/*		case "descendants":
+				nameArray = GetNameInput("For whose descendants would you like to search?");
+				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				getDescendants(personId);
+				break;
+			case "family":				
+				nameArray = GetNameInput("For whose family would you like to search?");
+				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				getFamily(personId);
+				break;
+			case "nextofkin":
+				nameArray = GetNameInput("For whose next of kin would you like to search?");
+				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				getNextOfKin(personId);
+				break;*/
+			// case "exit":
+			// 	window.close();
+			//default:
+				// alert("Please enter a valid search type or filter option.");
+				// initSearch();
+
+		}
+		// once the search is done, pass the results to the responder function
+		responder(result);
+	}
+	catch (err){
+		console.log(err);
+	}
+
 }
 
 function responder(results){
 	// results may be a list of strings, an object, or a single string.
-	alert(Object.keys(results).map(function(key){return results[key]})); 
-//	alert(Object.keys(results));
+	try {
+		if (results != null){
+			alert(Object.keys(results).map(function(key){return results[key]})); 
+		}
+		else
+		{
+			alert("No match was found.");
+		}
+
+	}
+	catch (err){
+		console.log(err);
+	}
+	finally{
+		// initSearch();
+	}
+
 }
 
 			 	
-function getPersonInfo(firstname, lastname){
+function getPersonInfo(personId){
 	var result;
-	// look up person's information
-		Object.keys(dataObject).forEach(function (key) {
-			if (dataObject[key]['firstName'].toLowerCase() == firstname 
-				&& dataObject[key]['lastName'].toLowerCase() == lastname)
-			{
-				result = dataObject[key];
-			}
+	try {
+		// look up person's information
+		return dataObject[personId];
+	}
+	catch (err){
+		console.log(err);
+	}
 
-
-		});
-
-	return result;
 }
 
 // function getDescendants(){
