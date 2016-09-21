@@ -105,7 +105,7 @@ var dataObject = {
 	  "eyeColor": "hazel",
 	  "occupation": "doctor",
 	  "parents": [],
-	  "currentSpouse": 693243224 
+	  "currentSpouse": 888201200 
 	},
 	"888201200" : {
 	  "firstName": "Mader",
@@ -117,7 +117,7 @@ var dataObject = {
 	  "eyeColor": "black",
 	  "occupation": "landscaper",
 	  "parents": [],
-	  "currentSpouse": 888201200 
+	  "currentSpouse": 693243224 
 	},
 	"878013758" : {
 	  "firstName": "Jill",
@@ -316,9 +316,12 @@ function forceKeyIntoObjects(object)
 	}
 	return object;
 }
+
+
 kidsArray = [];
 kidsNameArray = [];
-function ToGetDescendants(object)
+
+function getDescendants(object)
 {
 	var result;
 
@@ -328,28 +331,21 @@ function ToGetDescendants(object)
 		for (idNumber in yoohoo["parents"])
 		{
 			if (object["id"] == yoohoo["parents"][idNumber])
-				{
-					kidsArray.push(yoohoo["firstName"]+" "+yoohoo["lastName"]);
-					ToGetDescendants(yoohoo);
+			{
+				kidsArray.push(yoohoo["firstName"]+" "+yoohoo["lastName"]);
+				getDescendants(yoohoo);
 
-				}
-
-
+			}
 		}
-
-
 	}
 		return kidsArray; 
 }
 
 forceKeyIntoObjects(dataObject);
 var someObject = initSearch();
-var array = ToGetDescendants(someObject);
-alert(array);
-
-
-
-
+var array = getFamily(someObject);
+namesArray = getNames(array);
+alert("Immediate family members are "+namesArray);
 
 
 function initSearch(){
@@ -402,9 +398,64 @@ function getPersonInfo(firstname, lastname){
 
 // }
 
-function getFamily(id){
-	// return list of names of immediate family members
+function getNames(array)
+{
+	nameArray = [];
+	
+	for (objectItem in array)
+	{
+		yoohoo = array[objectItem];
+		nameArray.push(yoohoo["firstName"] + " " + yoohoo["lastName"]);
+	}
+	return nameArray;
 }
+
+function getFamily(object)
+{
+	familyList = [];
+	//parents
+	familyList.push(dataObject[object["parents"][0]], dataObject[object["parents"][1]]);
+	
+	for (key in dataObject)	
+	{
+		yoohoo = dataObject[key];
+		if (yoohoo["parents"][0] == object["id"])		
+		{
+			familyList.push(yoohoo);
+
+		}
+		
+
+	
+		if (yoohoo["parents"][1] == object["id"])
+		{
+			familyList.push(yoohoo);
+
+		}
+
+	
+		if (yoohoo["currentSpouse"] == object["id"])
+		{
+			familyList.push(yoohoo);
+
+		}
+
+				
+ 		if (yoohoo["parents"][0] == object["parents"][0] && yoohoo != object)
+		{
+			familyList.push(yoohoo);
+		}
+
+
+	}
+	console.log(familyList);
+	return familyList;
+
+}
+
+
+
+	 
 
 // there will be much more here, and some of the code above will certainly change
 
