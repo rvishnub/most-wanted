@@ -276,6 +276,82 @@ function printAllToConsole(dataObj){
 printAllToConsole(dataObject);
 */
 
+function convertObjectToArray(object){
+	firstArray = [];
+	for(var key in object){
+
+		object["id"] = key;
+		firstArray.push(object[key]);
+		console.log(object["id"]);
+	}
+	return firstArray;
+}
+	
+function pushToArray(object){
+	firstArray = [];
+	secondArray = [];
+	firstArray = convertObjectToArray(object);
+	console.log(firstArray);
+	for(objectItem in firstArray)
+	{
+		secondArray=convertObjectToArray(objectItem);
+	};
+	console.log(secondArray);
+	return secondArray;
+}
+
+// function getArrayOfObjects(dataObject){
+	// var array = dataObject.map(function(el){
+	// return convertObjectToArray;
+	// };
+	// console.log(array);
+	// return array;
+// }
+
+function forceKeyIntoObjects(object)
+{
+	for (key in object)
+	{
+		(object[key])["id"] = key;
+	}
+	return object;
+}
+kidsArray = [];
+kidsNameArray = [];
+function ToGetDescendants(object)
+{
+	var result;
+
+	for (key in dataObject)
+	{
+		var yoohoo = dataObject[key];
+		for (idNumber in yoohoo["parents"])
+		{
+			if (object["id"] == yoohoo["parents"][idNumber])
+				{
+					kidsArray.push(yoohoo["firstName"]+" "+yoohoo["lastName"]);
+					ToGetDescendants(yoohoo);
+
+				}
+
+
+		}
+
+
+	}
+		return kidsArray; 
+}
+
+forceKeyIntoObjects(dataObject);
+var someObject = initSearch();
+var array = ToGetDescendants(someObject);
+alert(array);
+
+
+
+
+
+
 function initSearch(){
 
 	// get all the information you need to run the search
@@ -290,7 +366,8 @@ function initSearch(){
 		initSearch();
 	}
 	else{
-		responder(result);
+		//responder(result);
+		return result;
 	}
 
 
@@ -321,12 +398,15 @@ function getPersonInfo(firstname, lastname){
 	return result;
 }
 
+// function getDescendants(){
 
-function getFamily(){
+// }
+
+function getFamily(id){
 	// return list of names of immediate family members
 }
 
 // there will be much more here, and some of the code above will certainly change
 
-initSearch();
-window.close(); // exit window as the end of the session -- you may remove this
+//initSearch();
+//window.close(); // exit window as the end of the session -- you may remove this
