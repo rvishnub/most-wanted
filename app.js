@@ -326,7 +326,7 @@ function pushToArray(object){
  function getArrayOfObjects(dataObject){
 	 var array = dataObject.map(function(el){
 	 return convertObjectToArray;
-	 };
+	 });
 	 console.log(array);
 	 return array;
  }
@@ -413,22 +413,23 @@ function getPersonInfo(personId){
 	catch (err){
 		console.log(err);
 	}
+}
 
-	function initSearch(){
+function initSearch(){
 	 var result;
 	 try {
 		 var personId;
 		 var nameArray;
 		 var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
 		 criteriaArray = criteria.toLowerCase().split(",");
-     	 then pass that info to the respective function.
+
 		 switch (criteria) {
 			 case "name":
 				 nameArray = GetNameInput("For whom would you like to search?");
 				 personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
 				 result = getPersonInfo(personId);
 				 break;
-	*		case "descendants":
+			case "descendants":
 				nameArray = GetNameInput("For whose descendants would you like to search?");
 				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
 				getDescendants(personId);
@@ -442,16 +443,15 @@ function getPersonInfo(personId){
 				nameArray = GetNameInput("For whose next of kin would you like to search?");
 				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
 				getNextOfKin(personId);
-				break;*
+				break;
 			 case "exit":
 			 	window.close();
 			default:
 				 alert("Please enter a valid search type or filter option.");
 				 initSearch();
 
-		 }
-		once the search is done, pass the results to the responder function
-		 responder(result);
+		}
+			responder(result);
 	 }
 	 catch (err){
 		 console.log(err);
@@ -461,10 +461,10 @@ function getPersonInfo(personId){
 
  function responder(results){
 
-	results may be a list of strings, an object, or a single string.
+	
 	 try {
 		 if (results != null){
-			alert(Object.keys(results).map(function(key){return results[key]}); this works
+			alert(Object.keys(results).map(function(key){return results[key]}));
 			 dataArray = Object.keys(results).map(function(key){return results[key]});
 			 console.log(dataArray);
 			 alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
@@ -492,13 +492,12 @@ function getPersonInfo(personId){
  function getPersonInfo(personId){
 	 var result;
 	 try {
-		look up person's information
-		 return dataObject[personId];
+
+	 return dataObject[personId];
 	 }
 	 catch (err){
 		 console.log(err);
 	 }
->>>>>>> 45f3ea0fb266d263f61162c1c324b2f5f5700e99
 
  }
 
@@ -817,8 +816,9 @@ function responder(results){
 	finally{
 		// initSearch();
 	}
-
 }
+
+
 
 
 	 
