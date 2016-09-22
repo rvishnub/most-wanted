@@ -321,19 +321,19 @@ function forceKeyIntoObjects(object)
 kidsArray = [];
 kidsNameArray = [];
 
-function getDescendants(object)
+function getDescendants(personId)
 {
 	var result;
 
 	for (key in dataObject)
 	{
-		var yoohoo = dataObject[key];
-		for (idNumber in yoohoo["parents"])
+		var relative = dataObject[key];
+		for (idNumber in relative["parents"])
 		{
-			if (object["id"] == yoohoo["parents"][idNumber])
+			if (personId == relative["parents"][idNumber])
 			{
-				kidsArray.push(yoohoo["firstName"]+" "+yoohoo["lastName"]);
-				getDescendants(yoohoo);
+				kidsArray.push(relative["firstName"]+" "+ relative["lastName"]);
+				getDescendants(relative);
 
 			}
 		}
@@ -359,14 +359,6 @@ function getPersonId(firstname, lastname){
 		});
 
 		return result;
-		// if (result != null){
-		// 	return result;
-		// }
-		// else
-		// {
-		// 	alert("That name was not found. Please conduct another search.");
-		// 	initSearch();
-		// }
 	}
 	catch (err){
 		console.log(err);
@@ -374,7 +366,7 @@ function getPersonId(firstname, lastname){
 
 }
 
-function GetNameInput(message){
+function getNameInput(message){
 	var yourName = prompt(message);
 	nameArray = yourName.toLowerCase().split(" ");
 	if (nameArray.length != 2){
@@ -387,81 +379,7 @@ function GetNameInput(message){
 
 }
 
-function initSearch(){
-	var result;
-	try {
-		var personId;
-		var nameArray;
-		var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
-		//criteriaArray = criteria.toLowerCase().split(",");
-     	// then pass that info to the respective function.
-		switch (criteria) {
-			case "name":
-				nameArray = GetNameInput("For whom would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				result = getPersonInfo(personId);
-				break;
-	/*		case "descendants":
-				nameArray = GetNameInput("For whose descendants would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getDescendants(personId);
-				break;
-			case "family":				
-				nameArray = GetNameInput("For whose family would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getFamily(personId);
-				break;
-			case "nextofkin":
-				nameArray = GetNameInput("For whose next of kin would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getNextOfKin(personId);
-				break;*/
-			// case "exit":
-			// 	window.close();
-			//default:
-				// alert("Please enter a valid search type or filter option.");
-				// initSearch();
-
-		}
-		// once the search is done, pass the results to the responder function
-		responder(result);
-	}
-	catch (err){
-		console.log(err);
-	}
-
-}
-
-function responder(results){
-
-	// results may be a list of strings, an object, or a single string.
-	try {
-		if (results != null){
-			//alert(Object.keys(results).map(function(key){return results[key]}); this works
-			dataArray = Object.keys(results).map(function(key){return results[key]});
-			console.log(dataArray);
-			alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
-				"\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
-				"\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
-				"\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
-				"\nSpouse: " + dataArray[9]);
-		}
-		else
-		{
-			alert("No match was found.");
-		}
-
-	}
-	catch (err){
-		console.log(err);
-	}
-	finally{
-		// initSearch();
-	}
-
-}
-
-			 	
+		 	
 function getPersonInfo(personId){
 	var result;
 	try {
@@ -533,6 +451,220 @@ function getFamily(object)
 
 }
 
+function getFilterValues(filters){
+	var filterValues = [];
+	try{
+		for (var i = 0; i < filters.length; i++) {
+			switch(filters[i]){
+				case "age":
+					do {age = prompt("Enter age. (Example: 50)");}
+					while (age == "" || isNaN(age));
+					filterValues.push(age);
+					break;
+				case "weight":
+					do {weight = prompt("Enter weight. (Example: 150)");}
+					while (weight == "" || isNaN(weight));
+					filterValues.push(weight);
+					break;
+				case "height":
+					do {height = prompt("Enter height. (Example: 6'1\")");}
+					while (height == "");
+					filterValues.push(height);
+					break;
+				case "occupation":
+					do {occupation = prompt("Enter one-word occupation. (Example: programmer)");}
+					while (occupation == "" || !isNaN(occupation));
+					filterValues.push(occupation);
+					break;
+				case "age range":
+					do {range = prompt("Enter age range. (Example: 40-50)");}
+					while (range == "");
+					filterValues.push(range);
+					break;
+				case "eye color":
+					do {color = prompt("Enter eye color. (Example: brown)");}
+					while (color == "" || !isNaN(color));
+					filterValues.push(color);
+					break;
+			}
+		}
+		return filterValues;
+	}
+	catch (err)
+	{
+		console.log(err);
+	}
+}
+
+function getFilters(){
+	try{
+		var filtersArray = [];
+		var filters = prompt("Please enter up to five comma-separated filter options. (Example: age,height,occupation)\n\nFILTER OPTIONS:\n\nage\n\nage range\n\nheight\n\nweight\n\noccupation\n\neye color");
+		if (filters.includes(","))
+		{
+			filtersArray = filters.toLowerCase().split(",");
+			if (filtersArray.length>5){
+				alert("You entered too many filters.");
+				getFilters();
+			}
+		}
+		else{
+			if (filters != ""){
+				filtersArray.push(filters);
+			}
+			else{
+				alert("You did not enter any filters.");
+				getFilters();
+			}
+		}
+		
+		return filtersArray;
+
+	}
+	catch (err){
+		console.log(err);
+	}
+
+
+}
+
+function runFilter(filters, values){
+	try{
+			var result;
+			for (var i =0; i <= filters.length; i++) {
+				switch (filters[i]){
+					case "age":
+						result = filterByAge(values[i]);
+						break;
+					case "weight":
+						result = filterByWeight(value[i]);
+						break;
+					case "height":
+						result = filterByHeight(value[i]);
+						break;
+					case "age range":
+						result = filterByAgeRange(value[i]);
+						break;
+					case "occupation":
+						result = filterByOccupation(value[i]);
+						break;
+					case "eye color":
+						result = filterByEyeColor(value[i]);
+						break;
+					}
+			}
+			return result;
+	}
+	catch (err)
+	{
+		console.log(err);
+	}
+
+}
+
+
+function initSearch(){
+	var result;
+	try {
+		var personId;
+		var nameArray;
+		var search = prompt("What type of search would you like to conduct? Please enter one of the five types.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nfilter");
+    	// then pass that info to the respective function.
+		switch (search.toLowerCase()) {
+			case "name":
+				nameArray = getNameInput("For whom would you like to search?");
+				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				result = getPersonInfo(personId);
+				break;
+			case "descendants":
+				nameArray = getNameInput("For whose descendants would you like to search?");
+				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				result = getDescendants(personId);
+				break;
+			case "family":				
+				nameArray = getNameInput("For whose family would you like to search?");
+				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				result = getFamily(getPersonInfo(personId));
+				break;
+			case "nextofkin":
+				nameArray = getNameInput("For whose next of kin would you like to search?");
+				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				result = getNextOfKin(getPersonInfo(personId));
+				break;
+			case "filter":
+				filters = getFilters();
+				values = getFilterValues(filters);
+				result = runFilter(filters, values);
+				break;
+			case "exit":
+				window.close();
+				break;
+			default:
+				alert("Please enter a valid search type, or exit to close application.");
+				initSearch();
+
+		}
+		// once the search is done, pass the results to the responder function
+		responder(result);
+	}
+	catch (err){
+		console.log(err);
+	}
+
+}
+
+function responder(results){
+
+	// results may be a list of strings, an object, or a single string.
+	try {
+
+		if (results != null) {
+			alert(JSON.stringify(results));
+		}
+		else{
+			alert("No matches found.");
+		}
+
+//		alert(results.toString());
+/*		if (results.constructor === Array)
+			if (results != null){
+				var finalResult  = "";
+				for (i=0; i<results.length; i++){
+					finalResult += "\n" + results[i];
+				}	
+				alert(finalResult);	
+			}
+			else{
+				alert("No results were found");
+			}
+
+		else{
+		// //this works for a basic name search
+			if (results != null){
+				//alert(Object.keys(results).map(function(key){return results[key]}); this works
+				dataArray = Object.keys(results).map(function(key){return results[key]});
+				console.log(dataArray);
+				alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
+					"\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
+					"\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
+					"\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
+					"\nSpouse: " + dataArray[9]);
+			}
+			else
+			{
+				alert("No match was found.");
+			}
+
+		}*/
+	}
+	catch (err){
+		console.log(err);
+	}
+	finally{
+		// initSearch();
+	}
+
+}
 
 
 	 
