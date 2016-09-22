@@ -262,6 +262,19 @@ var dataObject = {
 	  "occupation": "doctor",
 	  "parents": [313207561,313997561],
 	  "currentSpouse": null 
+	},
+
+	"313998001" : {
+	  "firstName": "Renuka",
+	  "lastName": "Madden",
+	  "gender": "female",
+	  "dob": "2/02/1987",
+	  "height": 63,
+	  "weight": 140,
+	  "eyeColor": "brown",
+	  "occupation": "programmer",
+	  "parents": [313998000,],
+	  "currentSpouse": null 
 	}
 };
 
@@ -275,6 +288,16 @@ function printAllToConsole(dataObj){
 }
 printAllToConsole(dataObject);
 */
+
+kidsArray = [];
+forceKeyIntoObjects(dataObject);
+var someObject = initSearch();
+var array = getFamily(someObject);
+console.log(array);
+array = getNames(array);
+alert(array);
+
+
 
 function convertObjectToArray(object){
 	firstArray = [];
@@ -300,13 +323,13 @@ function pushToArray(object){
 	return secondArray;
 }
 
-// function getArrayOfObjects(dataObject){
-	// var array = dataObject.map(function(el){
-	// return convertObjectToArray;
-	// };
-	// console.log(array);
-	// return array;
-// }
+ function getArrayOfObjects(dataObject){
+	 var array = dataObject.map(function(el){
+	 return convertObjectToArray;
+	 };
+	 console.log(array);
+	 return array;
+ }
 
 function forceKeyIntoObjects(object)
 {
@@ -317,62 +340,53 @@ function forceKeyIntoObjects(object)
 	return object;
 }
 
-
-kidsArray = [];
-kidsNameArray = [];
-
 function getDescendants(object)
 {
-	var result;
 
 	for (key in dataObject)
 	{
-		var yoohoo = dataObject[key];
-		for (idNumber in yoohoo["parents"])
+		var person = dataObject[key];
+		for (idNumber in person["parents"])
 		{
-			if (object["id"] == yoohoo["parents"][idNumber])
+			if (object["id"] == person["parents"][idNumber])
 			{
-				kidsArray.push(yoohoo["firstName"]+" "+yoohoo["lastName"]);
-				getDescendants(yoohoo);
-
+				kidsArray.push(person);
+				getDescendants(person);
 			}
 		}
 	}
 		return kidsArray; 
 }
 
-/*forceKeyIntoObjects(dataObject);
-var someObject = initSearch();
-var array = ToGetDescendants(someObject);
-alert(array);*/
 
-initSearch();
-function getPersonId(firstname, lastname){
-	var result;
-	try{
-			Object.keys(dataObject).forEach(function (key) {
-			if (dataObject[key]['firstName'].toLowerCase() == firstname 
-				&& dataObject[key]['lastName'].toLowerCase() == lastname)
-			{
-				result = key;
-			}
-		});
+
+
+ function getPersonId(firstname, lastname){
+	 var result;
+	 try{
+			 Object.keys(dataObject).forEach(function (key) {
+			 if (dataObject[key]["firstName"].toLowerCase() == firstname 
+				 && dataObject[key]["lastName"].toLowerCase() == lastname)
+			 {
+				 result = key;
+			 }
+		 });
 
 		return result;
-		// if (result != null){
-		// 	return result;
-		// }
-		// else
-		// {
-		// 	alert("That name was not found. Please conduct another search.");
-		// 	initSearch();
-		// }
-	}
-	catch (err){
-		console.log(err);
-	}
+		 if (result != null){
+		 	return result;
+		 }
+		 else
+		 {
+		 	alert("That name was not found. Please conduct another search.");
+		 	initSearch();
+		 }
+	 }
+	 catch (err){
+		 console.log(err);
+	 }
 
-}
+ }
 
 function GetNameInput(message){
 	var yourName = prompt(message);
@@ -387,21 +401,21 @@ function GetNameInput(message){
 
 }
 
-function initSearch(){
-	var result;
-	try {
-		var personId;
-		var nameArray;
-		var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
-		//criteriaArray = criteria.toLowerCase().split(",");
-     	// then pass that info to the respective function.
-		switch (criteria) {
-			case "name":
-				nameArray = GetNameInput("For whom would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				result = getPersonInfo(personId);
-				break;
-	/*		case "descendants":
+ function initSearch(){
+	 var result;
+	 try {
+		 var personId;
+		 var nameArray;
+		 var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
+		 criteriaArray = criteria.toLowerCase().split(",");
+     	 then pass that info to the respective function.
+		 switch (criteria) {
+			 case "name":
+				 nameArray = GetNameInput("For whom would you like to search?");
+				 personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				 result = getPersonInfo(personId);
+				 break;
+	*		case "descendants":
 				nameArray = GetNameInput("For whose descendants would you like to search?");
 				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
 				getDescendants(personId);
@@ -415,68 +429,69 @@ function initSearch(){
 				nameArray = GetNameInput("For whose next of kin would you like to search?");
 				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
 				getNextOfKin(personId);
-				break;*/
-			// case "exit":
-			// 	window.close();
-			//default:
-				// alert("Please enter a valid search type or filter option.");
-				// initSearch();
+				break;*
+			 case "exit":
+			 	window.close();
+			default:
+				 alert("Please enter a valid search type or filter option.");
+				 initSearch();
 
-		}
-		// once the search is done, pass the results to the responder function
-		responder(result);
-	}
-	catch (err){
-		console.log(err);
-	}
+		 }
+		once the search is done, pass the results to the responder function
+		 responder(result);
+	 }
+	 catch (err){
+		 console.log(err);
+	 }
 
-}
+ }
 
-function responder(results){
+ function responder(results){
 
-	// results may be a list of strings, an object, or a single string.
-	try {
-		if (results != null){
-			//alert(Object.keys(results).map(function(key){return results[key]}); this works
-			dataArray = Object.keys(results).map(function(key){return results[key]});
-			console.log(dataArray);
-			alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
-				"\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
-				"\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
-				"\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
-				"\nSpouse: " + dataArray[9]);
-		}
-		else
-		{
-			alert("No match was found.");
-		}
+	results may be a list of strings, an object, or a single string.
+	 try {
+		 if (results != null){
+			alert(Object.keys(results).map(function(key){return results[key]}); this works
+			 dataArray = Object.keys(results).map(function(key){return results[key]});
+			 console.log(dataArray);
+			 alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
+				 "\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
+				 "\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
+				 "\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
+				 "\nSpouse: " + dataArray[9]);
+		 }
+		 else
+		 {
+			 alert("No match was found.");
+		 }
 
-	}
-	catch (err){
-		console.log(err);
-	}
-	finally{
-		// initSearch();
-	}
+	 }
+	 catch (err){
+		 console.log(err);
+	 }
+	 finally{
+		initSearch();
+	 }
 
-}
+ }
 
 			 	
-function getPersonInfo(personId){
-	var result;
-	try {
-		// look up person's information
-		return dataObject[personId];
-	}
-	catch (err){
-		console.log(err);
-	}
+ function getPersonInfo(personId){
+	 var result;
+	 try {
+		look up person's information
+		 return dataObject[personId];
+	 }
+	 catch (err){
+		 console.log(err);
+	 }
 
-}
+ }
 
-// function getDescendants(){
+ function getDescendants(){
 
-// }
+ }
+
 
 function getNames(array)
 {
@@ -490,48 +505,91 @@ function getNames(array)
 	return nameArray;
 }
 
+
 function getFamily(object)
 {
 	familyList = [];
-	//parents
-	familyList.push(dataObject[object["parents"][0]], dataObject[object["parents"][1]]);
-	
+	familyList = familyList.concat(getSpouse(object));
+	familyList = familyList.concat(getParents(object));
+	familyList = familyList.concat(getSiblings(object));
+	familyList = familyList.concat(getChildren(object));
+	return familyList;
+}
+
+function getSpouse(object)
+{
+	spouse = [];
+	spouseId = object["currentSpouse"];
+	spouse.push(dataObject[spouseId]);
+	return spouse;
+}
+
+function getChildren(object)
+{
+	children = [];
 	for (key in dataObject)	
 	{
-		yoohoo = dataObject[key];
-		if (yoohoo["parents"][0] == object["id"])		
+		person = dataObject[key];
+		if (person["parents"][0] == object["id"])
 		{
-			familyList.push(yoohoo);
-
+			children.push(person);
 		}
-		
-
+		else if (person["parents"][1] == object["id"])
+		{
+			children.push(person);
+		}
 	
-		if (yoohoo["parents"][1] == object["id"])
-		{
-			familyList.push(yoohoo);
-
-		}
-
-	
-		if (yoohoo["currentSpouse"] == object["id"])
-		{
-			familyList.push(yoohoo);
-
-		}
-
-				
- 		if (yoohoo["parents"][0] == object["parents"][0] && yoohoo != object)
-		{
-			familyList.push(yoohoo);
-		}
-
-
 	}
-	console.log(familyList);
-	return familyList;
-
+	return children;
 }
+
+function getParents(object)
+{
+	myParents = [];
+	parentArray = [];
+	parentArray = object["parents"];
+	for (key in parentArray)
+	{
+		parentID = parentArray[key];
+		myParents.push(dataObject[parentID]);
+	}
+	return myParents;
+}	
+
+function getSiblings(object)
+{
+	mySiblings = [];
+	for (key in dataObject)
+	{
+		myParents = convertObjectToArray(object["parents"])
+		if (myParents.length == 0)
+		{
+			mySiblings = [];
+			break;
+		}
+		else
+		{
+			person = dataObject[key];
+			if (person["parents"][0] == object["parents"][0] && person != object)
+			{
+				mySiblings.push(person);
+			}
+		}
+	}
+	return mySiblings;
+}
+
+//grandchildren = GetChildren(GetChildren(object))
+//grandparent = GetParents(GetParents(object))
+//nieceNephen = GetChildren
+
+
+
+
+
+
+
+
 
 
 
