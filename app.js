@@ -6,7 +6,7 @@ var dataObject = {
 	  "dob": "1/18/1949",
 	  "height": 71,
 	  "weight": 175,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "programmer",
 	  "parents": [],
 	  "currentSpouse": 401222887 
@@ -18,7 +18,7 @@ var dataObject = {
 	  "dob": "4/1/1947",
 	  "height": 65,
 	  "weight": 162,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "assistant",
 	  "parents": [],
 	  "currentSpouse": 272822514 
@@ -30,7 +30,7 @@ var dataObject = {
 	  "dob": "5/9/1951",
 	  "height": 76,
 	  "weight": 250,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "landscaper",
 	  "parents": [],
 	  "currentSpouse": 260451248 
@@ -42,7 +42,7 @@ var dataObject = {
 	  "dob": "9/6/1945",
 	  "height": 62,
 	  "weight": 115,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "assistant",
 	  "parents": [],
 	  "currentSpouse": 409574486 
@@ -54,7 +54,7 @@ var dataObject = {
 	  "dob": "3/16/1938",
 	  "height": 70,
 	  "weight": 207,
-	  "eyeColor": "black",
+	  "eyecolor": "black",
 	  "occupation": "nurse",
 	  "parents": [],
 	  "currentSpouse": 464142841 
@@ -66,7 +66,7 @@ var dataObject = {
 	  "dob": "4/10/1940",
 	  "height": 72,
 	  "weight": 256,
-	  "eyeColor": "black",
+	  "eyecolor": "black",
 	  "occupation": "student",
 	  "parents": [],
 	  "currentSpouse": 629807187 
@@ -78,7 +78,7 @@ var dataObject = {
 	  "dob": "12/18/1952",
 	  "height": 66,
 	  "weight": 170,
-	  "eyeColor": "hazel",
+	  "eyecolor": "hazel",
 	  "occupation": "architect",
 	  "parents": [],
 	  "currentSpouse": 595767575 
@@ -90,7 +90,7 @@ var dataObject = {
 	  "dob": "10/28/1948",
 	  "height": 59,
 	  "weight": 137,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "architect",
 	  "parents": [],
 	  "currentSpouse": 982411429 
@@ -102,7 +102,7 @@ var dataObject = {
 	  "dob": "4/20/1939",
 	  "height": 69,
 	  "weight": 199,
-	  "eyeColor": "hazel",
+	  "eyecolor": "hazel",
 	  "occupation": "doctor",
 	  "parents": [],
 	  "currentSpouse": 888201200 
@@ -114,7 +114,7 @@ var dataObject = {
 	  "dob": "5/6/1937",
 	  "height": 76,
 	  "weight": 205,
-	  "eyeColor": "black",
+	  "eyecolor": "black",
 	  "occupation": "landscaper",
 	  "parents": [],
 	  "currentSpouse": 693243224 
@@ -126,7 +126,7 @@ var dataObject = {
 	  "dob": "2/8/1972",
 	  "height": 74,
 	  "weight": 118,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "programmer",
 	  "parents": [401222887,401222887],
 	  "currentSpouse": 294874671 
@@ -138,7 +138,7 @@ var dataObject = {
 	  "dob": "12/23/1969",
 	  "height": 66,
 	  "weight": 179,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "nurse",
 	  "parents": [401222887,401222887],
 	  "currentSpouse": 159819275 
@@ -150,7 +150,7 @@ var dataObject = {
 	  "dob": "12/18/1969",
 	  "height": 58,
 	  "weight": 156,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "assistant",
 	  "parents": [409574486,260451248],
 	  "currentSpouse": 951747547 
@@ -162,7 +162,7 @@ var dataObject = {
 	  "dob": "11/4/1970",
 	  "height": 62,
 	  "weight": 235,
-	  "eyeColor": "hazel",
+	  "eyecolor": "hazel",
 	  "occupation": "landscaper",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": null 
@@ -174,7 +174,7 @@ var dataObject = {
 	  "dob": "8/5/1967",
 	  "height": 61,
 	  "weight": 112,
-	  "eyeColor": "green",
+	  "eyecolor": "green",
 	  "occupation": "doctor",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": 878013758 
@@ -186,7 +186,7 @@ var dataObject = {
 	  "dob": "3/13/1963",
 	  "height": 74,
 	  "weight": 184,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "landscaper",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": null 
@@ -198,7 +198,7 @@ var dataObject = {
 	  "dob": "7/26/1959",
 	  "height": 71,
 	  "weight": 249,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "nurse",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null 
@@ -210,7 +210,7 @@ var dataObject = {
 	  "dob": "10/7/1953",
 	  "height": 70,
 	  "weight": 187,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "politician",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null 
@@ -222,7 +222,7 @@ var dataObject = {
 	  "dob": "12/11/1961",
 	  "height": 63,
 	  "weight": 241,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "assistant",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null 
@@ -234,7 +234,7 @@ var dataObject = {
 	  "dob": "2/19/1966",
 	  "height": 70,
 	  "weight": 110,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "assistant",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": 313997561 
@@ -246,7 +246,7 @@ var dataObject = {
 	  "dob": "2/19/1970",
 	  "height": 67,
 	  "weight": 100,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "doctor",
 	  "parents": [],
 	  "currentSpouse": 313207561 
@@ -258,7 +258,7 @@ var dataObject = {
 	  "dob": "2/02/1987",
 	  "height": 67,
 	  "weight": 100,
-	  "eyeColor": "blue",
+	  "eyecolor": "blue",
 	  "occupation": "doctor",
 	  "parents": [313207561,313997561],
 	  "currentSpouse": null 
@@ -271,7 +271,7 @@ var dataObject = {
 	  "dob": "11/23/1987",
 	  "height": 63,
 	  "weight": 140,
-	  "eyeColor": "brown",
+	  "eyecolor": "brown",
 	  "occupation": "programmer",
 	  "parents": [313998000,],
 	  "currentSpouse": null 
@@ -569,7 +569,7 @@ function getFilterValues(filters){
 					while (range == "");
 					filterValues.push(range);
 					break;
-				case "eye color":
+				case "eyecolor":
 					do {color = prompt("Enter eye color. (Example: brown)");}
 					while (color == "" || !isNaN(color));
 					filterValues.push(color);
@@ -587,7 +587,7 @@ function getFilterValues(filters){
 function getFilters(){
 	try{
 		var filtersArray = [];
-		var filters = prompt("Please enter up to five comma-separated filter options. (Example: age,height,occupation)\n\nFILTER OPTIONS:\n\nage\n\nage range\n\nheight\n\nweight\n\noccupation\n\neye color");
+		var filters = prompt("Please enter up to five comma-separated filter options. (Example: age,height,occupation)\n\nFILTER OPTIONS:\n\nage\n\nage range\n\nheight\n\nweight\n\noccupation\n\neyecolor");
 		if (filters.includes(","))
 		{
 			filtersArray = filters.toLowerCase().split(",");
@@ -612,34 +612,24 @@ function getFilters(){
 	catch (err){
 		console.log(err);
 	}
+
+
 }
 
 function runFilter(filters, values){
 	try{
-			var result;
+			var dataArray = convertObjectToArray(dataObject);
 			for (var i =0; i <= filters.length; i++) {
-				switch (filters[i]){
-					case "age":
-						result = filterByAge(values[i]);
-						break;
-					case "weight":
-						result = filterByWeight(value[i]);
-						break;
-					case "height":
-						result = filterByHeight(value[i]);
-						break;
-					case "age range":
-						result = filterByAgeRange(value[i]);
-						break;
-					case "occupation":
-						result = filterByOccupation(value[i]);
-						break;
-					case "eye color":
-						result = filterByEyeColor(value[i]);
-						break;
-					}
+				dataArray = dataArray.filter(function(el){
+							if(el[filters[i]] == values[i]){
+									return true;
+								}
+								else{
+									return false;
+								}
+						});
 			}
-			return result;
+			return dataArray;
 	}
 	catch (err)
 	{
@@ -654,7 +644,7 @@ function initSearch(){
 	try {
 		var personId;
 		var nameArray;
-		var search = prompt("What type of search would you like to conduct? Please enter one of the five types.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nfilter");
+		var search = prompt("What type of search would you like to conduct? Please enter one of the five types.\n\nTYPES\n\nname\n\ndescendants\n\nfamily\n\nnext of kin\n\nfilter");
     	// then pass that info to the respective function.
 		switch (search.toLowerCase()) {
 			case "name":
@@ -704,7 +694,8 @@ function responder(results){
 	// results may be a list of strings, an object, or a single string.
 	try {
 
-		if (results != null) {
+		if (results.length != 0)
+		{
 			alert(JSON.stringify(results));
 		}
 		else{
@@ -751,6 +742,10 @@ function responder(results){
 	}
 }
 
+
+kidsArray = [];
+forceKeyIntoObjects(dataObject);
+initSearch();
 // there will be much more here, and some of the code above will certainly change
 
 //initSearch();
