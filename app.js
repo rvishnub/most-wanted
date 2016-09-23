@@ -268,7 +268,7 @@ var dataObject = {
 	  "firstName": "Renuka",
 	  "lastName": "Madden",
 	  "gender": "female",
-	  "dob": "2/02/1987",
+	  "dob": "11/23/1987",
 	  "height": 63,
 	  "weight": 140,
 	  "eyeColor": "brown",
@@ -289,23 +289,12 @@ function printAllToConsole(dataObj){
 printAllToConsole(dataObject);
 */
 
-kidsArray = [];
-forceKeyIntoObjects(dataObject);
-var someObject = initSearch();
-var array = getFamily(someObject);
-console.log(array);
-array = getNames(array);
-alert(array);
-
-
-
 function convertObjectToArray(object){
 	firstArray = [];
 	for(var key in object){
 
 		object["id"] = key;
 		firstArray.push(object[key]);
-		console.log(object["id"]);
 	}
 	return firstArray;
 }
@@ -341,8 +330,6 @@ function forceKeyIntoObjects(object)
 }
 
 
-kidsArray = [];
-kidsNameArray = [];
 
 function getDescendants(personId)
 {
@@ -354,13 +341,17 @@ function getDescendants(personId)
 		{
 			if (personId == relative["parents"][idNumber])
 			{
-				kidsArray.push(relative["firstName"]+" "+ relative["lastName"]);
-				getDescendants(relative);
+				kidsArray.push(relative);
+				getDescendants(relative.id);
 			}
 		}
+
+
 	}
-		return kidsArray; 
+	kidsSortedArray = orderByDate(kidsArray, "dob");
+	return kidsSortedArray; 
 }
+
 
 
 
@@ -404,91 +395,7 @@ function getNameInput(message){
 
 }
 	 	
-function getPersonInfo(personId){
-	var result;
-	try {
-		// look up person's information
-		return dataObject[personId];
-	}
-	catch (err){
-		console.log(err);
-	}
-}
 
-function initSearch(){
-	 var result;
-	 try {
-		 var personId;
-		 var nameArray;
-		 var criteria = prompt("What type of search would you like to conduct? Please enter one of the four types OR up to five comma-separated filter options.\n\nTYPES\n\nname\n\ndescendants\n\nimmediate family\n\nnext of kin\n\nFILTER OPTIONS:\n\nage\n\n\age range\n\nheight\n\nweight\n\noccupation\n\neye color");
-		 criteriaArray = criteria.toLowerCase().split(",");
-
-		 switch (criteria) {
-			 case "name":
-				 nameArray = GetNameInput("For whom would you like to search?");
-				 personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				 result = getPersonInfo(personId);
-				 break;
-			case "descendants":
-				nameArray = GetNameInput("For whose descendants would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getDescendants(personId);
-				break;
-			case "family":				
-				nameArray = GetNameInput("For whose family would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getFamily(personId);
-				break;
-			case "nextofkin":
-				nameArray = GetNameInput("For whose next of kin would you like to search?");
-				var personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-				getNextOfKin(personId);
-				break;
-			 case "exit":
-			 	window.close();
-			default:
-				 alert("Please enter a valid search type or filter option.");
-				 initSearch();
-
-		}
-			responder(result);
-	 }
-	 catch (err){
-		 console.log(err);
-	 }
-
- }
-
- function responder(results){
-
-	
-	 try {
-		 if (results != null){
-			alert(Object.keys(results).map(function(key){return results[key]}));
-			 dataArray = Object.keys(results).map(function(key){return results[key]});
-			 console.log(dataArray);
-			 alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
-				 "\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
-				 "\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
-				 "\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
-				 "\nSpouse: " + dataArray[9]);
-		 }
-		 else
-		 {
-			 alert("No match was found.");
-		 }
-
-	 }
-	 catch (err){
-		 console.log(err);
-	 }
-	 finally{
-		initSearch();
-	 }
-
- }
-
-			 	
  function getPersonInfo(personId){
 	 var result;
 	 try {
@@ -500,11 +407,6 @@ function initSearch(){
 	 }
 
  }
-
- function getDescendants(){
-
- }
-
 
 function getNames(array)
 {
@@ -527,6 +429,26 @@ function getFamily(object)
 	familyList = familyList.concat(getSiblings(object));
 	familyList = familyList.concat(getChildren(object));
 	return familyList;
+}
+
+function getNextOfKin(object)
+{
+	nextKin = [];
+	nextKin = nextKin.concat(getSpouse(object));
+	console.log(nextKin);
+	nextKin = nextKin.concat(getChildren(object));
+	console.log(nextKin);
+	nextKin = nextKin.concat(getParents(object));
+	console.log(nextKin);
+	nextKin = nextKin.concat(getSiblings(object));
+	console.log(nextKin);
+	nextKin = nextKin.concat(getChildren(getChildren(object));
+	nextKin = nextKin.concat(getParents(getParents(object));
+	nextKin = nextKin.concat(getChildren(getSiblings(object)));
+	nextKin = nextKin.concat(getSiblings(getParents(object)));
+	nextKin = nextKin.concat(getChildren(getChildren(getChildren(object))));
+	nextKin = nextKin.concat(getParents(getParents(getParents(object))));
+	return nextKin;
 }
 
 function getSpouse(object)
@@ -553,6 +475,7 @@ function getChildren(object)
 		}
 	
 	}
+	children = orderByDate(children, "dob");
 	return children;
 }
 
@@ -566,6 +489,7 @@ function getParents(object)
 		parentID = parentArray[key];
 		myParents.push(dataObject[parentID]);
 	}
+	myParents = orderByDate(myParents, "dob");
 	return myParents;
 }	
 
@@ -589,19 +513,30 @@ function getSiblings(object)
 			}
 		}
 	}
+	mySiblings = orderByDate(mySiblings, "dob");
 	return mySiblings;
 }
 
-//grandchildren = GetChildren(GetChildren(object))
-//grandparent = GetParents(GetParents(object))
-//nieceNephen = GetChildren
 
+function convertObjectDOBToDate(object)
+{
+	
+	var date = new Date(object["dob"]);
+	object["dob"] = date;
+	return object;
+}
 
-
-
-
-
-
+function orderByDate(array, dateProp)
+{
+	for (objectIndex in array)
+	{
+		convertObjectDOBToDate(array[objectIndex]);
+	}
+	return array.slice().sort(function (a, b)
+	{
+    return (a[dateProp])< b[dateProp]? -1 : 1;
+	});
+}
 
 
 function getFilterValues(filters){
@@ -677,8 +612,6 @@ function getFilters(){
 	catch (err){
 		console.log(err);
 	}
-
-
 }
 
 function runFilter(filters, values){
@@ -817,11 +750,6 @@ function responder(results){
 		// initSearch();
 	}
 }
-
-
-
-
-	 
 
 // there will be much more here, and some of the code above will certainly change
 
