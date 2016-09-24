@@ -386,7 +386,7 @@ function getNameInput(message){
 	var yourName = prompt(message);
 	nameArray = yourName.toLowerCase().split(" ");
 	if (nameArray.length != 2){
-		alert("Please enter a first name and a last name (example: John Doe");
+		alert("Please enter a first name and a last name (example: John Doe)");
 		GetNameInput(message);
 	}
 	else{
@@ -442,8 +442,8 @@ function getNextOfKin(object)
 	console.log(nextKin);
 	nextKin = nextKin.concat(getSiblings(object));
 	console.log(nextKin);
-	nextKin = nextKin.concat(getChildren(getChildren(object));
-	nextKin = nextKin.concat(getParents(getParents(object));
+	nextKin = nextKin.concat(getChildren(getChildren(object)));
+	nextKin = nextKin.concat(getParents(getParents(object)));
 	nextKin = nextKin.concat(getChildren(getSiblings(object)));
 	nextKin = nextKin.concat(getSiblings(getParents(object)));
 	nextKin = nextKin.concat(getChildren(getChildren(getChildren(object))));
@@ -538,15 +538,23 @@ function orderByDate(array, dateProp)
 	});
 }
 
+function convertObjectDOBToAge(object)
+{
+	for (key in object)
+	{
+		(object[key])["age"] = getAge(object[key]["dob"]);
+	}
+	return object;
+}
 
-function getFilterValues(filters){
+function setFilterValues(filterCriteria){
 	var filterValues = [];
 	try{
-		for (var i = 0; i < filters.length; i++) {
-			switch(filters[i]){
+		for (var i = 0; i < filterCriteria.length; i++) {
+			switch(filtersArray[i]){
 				case "age":
 					do {age = prompt("Enter age. (Example: 50)");}
-					while (age == "" || isNaN(age));
+					while (isNaN(age));
 					filterValues.push(age);
 					break;
 				case "weight":
@@ -555,24 +563,33 @@ function getFilterValues(filters){
 					filterValues.push(weight);
 					break;
 				case "height":
+				    heightFormat = /^(\d+)'(\d+)(?:''|")$/;
 					do {height = prompt("Enter height. (Example: 6'1\")");}
-					while (height == "");
-					filterValues.push(height);
+					while (!heightFormat.exec(height));		
+					var inches = convertHeightToInches(height);
+					filterValues.push(inches);
 					break;
 				case "occupation":
 					do {occupation = prompt("Enter one-word occupation. (Example: programmer)");}
 					while (occupation == "" || !isNaN(occupation));
 					filterValues.push(occupation);
 					break;
-				case "age range":
+				case "agerange":
+					ageRangeFormat = /^(\d+)-(\d+)$/;
 					do {range = prompt("Enter age range. (Example: 40-50)");}
-					while (range == "");
+					while (!ageRangeFormat.exec(range));
+					range = setAgeRange(range);
 					filterValues.push(range);
 					break;
 				case "eyecolor":
 					do {color = prompt("Enter eye color. (Example: brown)");}
 					while (color == "" || !isNaN(color));
 					filterValues.push(color);
+					break;
+				case "gender":
+					do {gender = prompt("Enter gender. (Example: male, female)");}
+					while (gender != "male" && gender != "female");
+					filterValues.push(gender);
 					break;
 			}
 		}
@@ -585,51 +602,98 @@ function getFilterValues(filters){
 }
 
 function getFilters(){
-	try{
-		var filtersArray = [];
-		var filters = prompt("Please enter up to five comma-separated filter options. (Example: age,height,occupation)\n\nFILTER OPTIONS:\n\nage\n\nage range\n\nheight\n\nweight\n\noccupation\n\neyecolor");
-		if (filters.includes(","))
-		{
-			filtersArray = filters.toLowerCase().split(",");
-			if (filtersArray.length>5){
-				alert("You entered too many filters.");
-				getFilters();
-			}
-		}
-		else{
-			if (filters != ""){
-				filtersArray.push(filters);
-			}
-			else{
-				alert("You did not enter any filters.");
-				getFilters();
-			}
-		}
-		
-		return filtersArray;
+	try
+	{
 
-	}
+		var filters = prompt("Please enter up to five comma-separated criteria. (Example: age,height,occupation)\n\nFILTER OPTIONS:\n\nAge or Age range\n\nHeight\n\nWeight\n\nOccupation\n\nEye color\n\nGender");
+		newFilters = filters.replace(/\s+/g, '');
+		filtersArray = newFilters.toLowerCase().split(",");
+		
+		if (!validateFilters(filtersArray)){
+			filters=""
+			getFilters();
+		}
+		return filtersArray;	
+		
+	}	
+	
 	catch (err){
 		console.log(err);
 	}
+}
 
+function validateFilters(filters){
+	var maxFilters = 5;
+	var minFilters = 1;
+	var badFilter = false;
+
+	if (filters.length > maxFilters){
+		alert("You entered too many filters.");
+		return false;
+	}
+	else if (filters.length < minFilters){
+		alert("You did not enter any filters.");
+		return false;
+	}
+	
+	for (i=0;i<filters.length;i++){
+		if (filters[i] != "gender" && filters[i] != "occupation" &&
+			filters[i] != "age" && filters[i] != "agerange" &&
+			filters[i] != "height" && filters[i] != "weight" &&
+			filters[i] != "eyecolor") {
+				
+				badFilter = true;
+			}
+	}
+	if (badFilter){
+		alert("You entered an invalid filter, please re-enter your search criteria");
+		return false;
+	}
+	else{
+		return true;
+	}
 
 }
 
 function runFilter(filters, values){
 	try{
-			var dataArray = convertObjectToArray(dataObject);
+			var resultsData = convertObjectToArray(dataObject);
 			for (var i =0; i <= filters.length; i++) {
-				dataArray = dataArray.filter(function(el){
-							if(el[filters[i]] == values[i]){
+				resultsData = resultsData.filter(function(el){
+							if(filters[i] == "agerange") {						
+							 	if (values[i][1] <= el["age"] && el["age"] <= values[i][2]){
+							 		return true;
+							 	}
+							 	else{
+							 		return false;
+							 	}
+							}
+							else if (filters[i] == "occupation" || filters[i] == "eyecolor") {
+								if (values[i] == el["eyecolor"] || values[i] == el["occupation"]){
 									return true;
 								}
 								else{
 									return false;
 								}
+							}
+							else if(el[filters[i]] == values[i])
+							{
+									return true;
+							}
+							else
+							{
+									return false;
+							}
 						});
+				
 			}
-			return dataArray;
+			// return getNames(dataArray);
+			return resultsData.map(function(el){
+				return {
+					firstname: el["firstName"],
+					lastname: el["lastName"]
+					};
+			});
 	}
 	catch (err)
 	{
@@ -643,38 +707,41 @@ function initSearch(){
 	var result;
 	try {
 		var personId;
-		var nameArray;
-		var search = prompt("What type of search would you like to conduct? Please enter one of the five types.\n\nTYPES\n\nname\n\ndescendants\n\nfamily\n\nnext of kin\n\nfilter");
+		var nameToSearch;
+		var searchType;
+
+		do {searchType = prompt("What type of search would you like to conduct? Please enter one of the five types, or 'exit' to close.\n\nTYPES\n\nName\n\nDescendants\n\nFamily\n\nNext of kin\n\nFiltered");}
+		while (searchType == "");
+
     	// then pass that info to the respective function.
-		switch (search.toLowerCase()) {
+		switch (searchType.toLowerCase()) {
 			case "name":
-				nameArray = getNameInput("For whom would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				nameToSearch = getNameInput("For whom would you like to search?");
+				personId = getPersonId(nameToSearch[0], nameToSearch[nameToSearch.length-1]);
 				result = getPersonInfo(personId);
 				break;
 			case "descendants":
-				nameArray = getNameInput("For whose descendants would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				nameToSearch = getNameInput("For whose descendants would you like to search?");
+				personId = getPersonId(nameToSearch[0], nameToSearch[nameToSearch.length-1]);
 				result = getDescendants(personId);
 				break;
 			case "family":				
-				nameArray = getNameInput("For whose family would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+				nameToSearch = getNameInput("For whose family would you like to search?");
+				personId = getPersonId(nameToSearch[0], nameToSearch[nameToSearch.length-1]);
 				result = getFamily(getPersonInfo(personId));
 				break;
-			case "nextofkin":
-				nameArray = getNameInput("For whose next of kin would you like to search?");
-				personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
+			case "next of kin":
+				nameToSearch = getNameInput("For whose next of kin would you like to search?");
+				personId = getPersonId(nameToSearch[0], nameToSearch[nameToSearch.length-1]);
 				result = getNextOfKin(getPersonInfo(personId));
 				break;
-			case "filter":
-				filters = getFilters();
-				values = getFilterValues(filters);
-				result = runFilter(filters, values);
+			case "filtered":
+				searchFilters = getFilters();
+				values = setFilterValues(searchFilters);
+			    result = runFilter(searchFilters, values);
 				break;
 			case "exit":
-				window.close();
-				break;
+				return;
 			default:
 				alert("Please enter a valid search type, or exit to close application.");
 				initSearch();
@@ -682,6 +749,7 @@ function initSearch(){
 		}
 		// once the search is done, pass the results to the responder function
 		responder(result);
+		initSearch();
 	}
 	catch (err){
 		console.log(err);
@@ -694,45 +762,17 @@ function responder(results){
 	// results may be a list of strings, an object, or a single string.
 	try {
 
-		if (results.length != 0)
-		{
+
+		if (results != undefined && results.length != 0 )
+		{		
+			//alert(JSON.stringify(results, null, 4));
 			alert(JSON.stringify(results));
 		}
 		else{
 			alert("No matches found.");
 		}
 
-//		alert(results.toString());
-/*		if (results.constructor === Array)
-			if (results != null){
-				var finalResult  = "";
-				for (i=0; i<results.length; i++){
-					finalResult += "\n" + results[i];
-				}	
-				alert(finalResult);	
-			}
-			else{
-				alert("No results were found");
-			}
 
-		else{
-		// //this works for a basic name search
-			if (results != null){
-				//alert(Object.keys(results).map(function(key){return results[key]}); this works
-				dataArray = Object.keys(results).map(function(key){return results[key]});
-				console.log(dataArray);
-				alert("First name: " + dataArray[0] + "\nLast name: " + dataArray[1] + 
-					"\nGender: " + dataArray[2] + "\nDate of birth: "+ dataArray[3] + "\nHeight: " + dataArray[4] + " in."+ 
-					"\nWeight: " + dataArray[5] + " lbs." + "\nEye color: " + dataArray[6] +
-					"\nOccupation: " + dataArray[7] + "\nParents: " + dataArray[8] +
-					"\nSpouse: " + dataArray[9]);
-			}
-			else
-			{
-				alert("No match was found.");
-			}
-
-		}*/
 	}
 	catch (err){
 		console.log(err);
@@ -742,10 +782,60 @@ function responder(results){
 	}
 }
 
+function convertHeightToInches(height){
+	try {
+		var heightFormat = /^(\d+)'(\d+)(?:''|")$/;
+		var inchesPerFoot = 12;
+		height = heightFormat.exec(height);
+		var feet = parseInt(height[1],10);
+		var inches = parseInt(height[2],10);
+
+		return (feet*inchesPerFoot+inches);
+	}
+	catch (err){
+		console.log(err);
+	}
+}
+
+function setAgeRange(range){
+	try{
+		var ageRangeFormat = /^(\d+)-(\d+)$/;
+		range = ageRangeFormat.exec(range);
+		var lowAge = parseInt(range[1],10);
+		var highAge = parseInt(range[2],10);
+
+		return range;
+	}
+	catch(err)
+	{
+		console.log(err);
+	}
+}
+
+function getAge(dateString) {
+	try {
+		var today = new Date();
+	    var birthDate = new Date(dateString);
+	    var age = today.getFullYear() - birthDate.getFullYear();
+	    var month = today.getMonth() - birthDate.getMonth();
+	    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+	        age--;
+	    }
+	    return age	
+	}
+	catch(err){
+		console.log(err);
+	}
+}
+
+ 
 
 kidsArray = [];
 forceKeyIntoObjects(dataObject);
+convertObjectDOBToAge(dataObject);
+
 initSearch();
+
 // there will be much more here, and some of the code above will certainly change
 
 //initSearch();
