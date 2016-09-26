@@ -273,7 +273,7 @@ var dataObject = {
 	  "weight": 140,
 	  "eyecolor": "brown",
 	  "occupation": "programmer",
-	  "parents": [313998000],
+	  "parents": [313998000,],
 	  "currentSpouse": null 
 	},
 	
@@ -286,7 +286,7 @@ var dataObject = {
 	  "weight": 180,
 	  "eyecolor": "blue",
 	  "occupation": "mudwrestler",
-	  "parents": [969837479],
+	  "parents": [],
 	  "currentSpouse": null 
 	}
 };
@@ -360,7 +360,7 @@ function getDescendants(personId, kidsArray=[])
 	}
 	kidsArray = cleanArray(kidsArray);
 	kidsSortedArray = orderByDate(kidsArray, "dob");
-	return kidsSortedArray; 
+	return getNames(kidsSortedArray); 
 }
 //do not erase this, it works--------------------------------------
 
@@ -423,7 +423,7 @@ function getNames(array)
 {
 	nameArray = [];
 	array = cleanArray(array);
-	
+
 	for (objectItem in array)
 	{
 		yoohoo = array[objectItem];
@@ -441,75 +441,43 @@ function getFamily(object)
 	familyList = familyList.concat(getParents(object));
 	familyList = familyList.concat(getSiblings(object));
 	familyList = cleanArray(familyList);
-	return familyList;
+	return getNames(familyList);
 }
 
-function getNextOfKin(object, nextKin = [])
+function getNextOfKin(object)
 {
-	nextKin = cleanArray(getFamily(object));
-
-	children = getChildren(object);
-	for (kids in children)
+	nextKin = [];
+	nextKin = getFamily(object);
+	if (nextKin.length>0)
 	{
-		grandchildren = grandchildren.concat(getChildren(children[kids]));
-		grandchildren = orderByDate(grandchildren);
-		nextOfKin = grandchildren[0];
+		nextOfKin = [];
+		nextOfKin.push(nextKin.shift());
+		console.log(getNames(nextKin));
+		return nextOfKin; 
 	}
-	parents = getParents(object);
-	for (parent in parents)
+	else
 	{
-		grandparents = grandparents.concat(getParents(parents[parent]));
-		grandparents = orderByDate(grandparents);
-		nextOfKin = grandparents[0];
-	}	
-	
-	nextOfKin = nextKin[0];
-		
-		
-	nextKin = cleanArray(nextKin);
-	console.log(getNames(nextKin));
-	kin = getUniqueArray(nextKin);
-	console.log(getNames(kin));
-	return kin;
+		nextKin = nextKin.concat(getGrandchildren(object));
+		nextKin = nextKin.concat(getGrandparents(object));
+		nextKin = nextKin.concat(getNieceNephew(object));
+		nextKin = nextKin.concat(getAuntUncle(object));
+		nextKin = nextKin.concat(getGreatGrandchildren(object));
+		nextKin = nextKin.concat(getGreatGrandparents(object));
+	}
+	if (nextKin.length==0)
+	{
+		alert(object.firstName + " " + object.lastName + " has no next of kin.");
+	}
+	else
+	{
+		nextKin = cleanArray(nextKin);
+		nextOfKin = [];
+		nextOfKin.push(nextKin.shift());
+		console.log(getNames(nextKin));
+		return getNames(nextOfKin);
+	}
 }
 
-// function getNextOfKin(object, nextKin = [], x=10)
-// {
-	// nextNextKin = [];
-	// tempArray = [];
-	// tempArray = getFamily(object);
-	// nextKin = nextKin.concat(tempArray);
-	// while (x>0)
-	// {
-		// for (kinKey in nextKin)
-		// {
-			// return getNextOfKin(nextKin[kinKey], nextKin, x-=1);
-		// }
-	// }
-	// console.log(nextKin);
-	// getUniqueArray(nextKin);
-	// console.log(nextKin);
-	// nextNextKin = getNames(nextKin);
-	// return nextNextKin;
-// }
-// function getNextOfKin(object, nextKin = [], x=5)
-// {
-	// tempArray = [];	
-	// tempArray = getFamily(object);
-	// nextKin = nextKin.concat(tempArray);
-	// while (x>0)
-	// {
-		// for (kinKey in nextKin)
-		// {
-			// nextKin.shift();
-			// getNextOfKin(nextKin[kinKey], nextKin, x-=1);
-
-		// }
-	// }
-	// nextKin = cleanArray(nextKin);
-	// console.log(nextKin);
-	// return nextKin;
-// }
 
 
 function getUniqueArray(array)
@@ -557,11 +525,11 @@ function getChildren(object)
 		person = dataObject[key];
 		if (person["parents"][0] == object["id"])
 		{
-			children = children.concat(person);
+			children.push(person);
 		}
 		else if (person["parents"][1] == object["id"])
 		{
-			children = children.concat(person);
+			children.push(person);
 		}
 	
 	}
@@ -589,7 +557,7 @@ function getParents(object)
 	}
 	myParents = orderByDate(myParents, "dob");
 	return myParents;
-}	
+}		
 
 function getSiblings(object)
 {
@@ -615,6 +583,90 @@ function getSiblings(object)
 	return mySiblings;
 }
 
+function getGrandchildren(object)
+{
+	children = [];
+	children = getChildren(object);
+	grandchildren = [];
+	for (kidIndex in children)
+	{
+		grandchildren = grandchildren.concat(getChildren(children[kidIndex]));		
+	}
+	grandchildren = cleanArray(grandchildren);
+	grandchildren = orderByDate(grandchildren, "dob");
+	return grandchildren;
+}
+
+function getGrandparents(object)
+{
+	parents = [];
+	parents = getParents(object);
+	grandparents = [];
+	for (parentIndex in parents)
+	{
+		grandchildren = grandparents.concat(getParents(parents[parentIndex]));		
+	}
+	grandparents = cleanArray(grandparents);
+	grandparents = orderByDate(grandparents, "dob");
+	return grandparents;
+}
+
+function getNieceNephew(object)
+{
+	siblings = [];
+	siblings = getSiblings(object);
+	nieceNephew = [];
+	for (siblingIndex in siblings)
+	{
+		nieceNephew = nieceNephew.concat(getChildren(siblings[siblingIndex]));		
+	}
+	nieceNephew = cleanArray(nieceNephew);
+	nieceNephew = orderByDate(nieceNephew, "dob");
+	return nieceNephew;
+}
+
+function getAuntUncle(object)
+{
+	parents = [];
+	parents = getParents(object);
+	auntUncle = [];
+	for (parentIndex in parents)
+	{
+		auntUncle = auntUncle.concat(getSiblings(parents[parentIndex]));		
+	}
+	auntUncle = cleanArray(auntUncle);
+	auntUncle = orderByDate(auntUncle, "dob");
+	return auntUncle;
+}
+
+function getGreatGrandchildren(object)
+{
+	grandchildren = [];
+	grandchildren = getGrandchildren(object);
+	greatGrandchildren = [];
+	for (gchildIndex in grandchildren)
+	{
+		greatGrandchildren = greatGrandchildren.concat(getChildren(grandchildren[gchildIndex]));		
+	}
+	greatGrandchildren = cleanArray(greatGrandchildren);
+	greatGrandchildren = orderByDate(greatGrandchildren, "dob");
+	return greatGrandchildren;
+}
+
+function getGreatGrandparents(object)
+{
+	grandparents = [];
+	grandparents = getParents(object);
+	greatGrandparents = [];
+	for (gparentIndex in grandparents)
+	{
+		greatGrandparents = greatGrandparents.concat(getParents(grandparents[gparentIndex]));		
+	}
+	greatGrandparents = cleanArray(greatGrandparents);
+	greatGrandparents = orderByDate(greatGrandparents, "dob");
+	return greatGrandparents;
+}
+
 
 function convertObjectDOBToDate(object)
 {
@@ -636,7 +688,6 @@ function orderByDate(array, dateProp)
     return (a[dateProp])< b[dateProp]? -1 : 1;
 	});
 }
-
 
 function convertObjectDOBToAge(object)
 {
@@ -863,7 +914,7 @@ function responder(results){
 	try {
 
 
-		if (results)
+		if (results != undefined && results.length != 0 )
 		{		
 			//alert(JSON.stringify(results, null, 4));
 			alert(JSON.stringify(results));
@@ -917,8 +968,8 @@ function getAge(dateString) {
 		var today = new Date();
 	    var birthDate = new Date(dateString);
 	    var age = today.getFullYear() - birthDate.getFullYear();
-	    var m = today.getMonth() - birthDate.getMonth();
-	    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+	    var month = today.getMonth() - birthDate.getMonth();
+	    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
 	        age--;
 	    }
 	    return age	
@@ -928,30 +979,10 @@ function getAge(dateString) {
 	}
 }
 
- 
-
 forceKeyIntoObjects(dataObject);
 convertObjectDOBToAge(dataObject);
-var array = initSearch();
-// nameArray = getNameInput("Search for. . . .");
-// personId = getPersonId(nameArray[0], nameArray[nameArray.length-1]);
-// object = getPersonInfo(personId);
-// array = getNextOfKin(object, nextKin=[]);
-// console.log(array);
-// array = getNames(array);
 
-
-	
-//console.log(array);
-// newArray = [];
-// for (childIndex in array)
-// {
-	// newArray = newArray.concat(getChildren(array[childIndex]));
-	// console.log(newArray);
-// }
-// console.log(newArray);
-// newerArray = getNames(newArray);
-// alert(newerArray);
+initSearch();
 
 // there will be much more here, and some of the code above will certainly change
 
