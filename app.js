@@ -914,7 +914,7 @@ function responder(results){
 	try {
 
 
-		if (results != undefined && results.length != 0 )
+		if (results)
 		{		
 			//alert(JSON.stringify(results, null, 4));
 			alert(JSON.stringify(results));
